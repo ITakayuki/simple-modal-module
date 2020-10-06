@@ -1,9 +1,9 @@
 # Simple-Modal-Module
 - ## How to install
-    - npm install scroll-module
+    - npm install simple-modal-module
 
 - ## How to use
-    - import Scroller from "scroll-module";
+    - import Modal from "simple-modal-module";
     - if you use this module in React
         -   ```javascript:app.js
             import Modal from  "simple-modal-module";
