@@ -1,8 +1,5 @@
 declare const ModalModule: (
-    modalNum: number,
-    modalColor: string,
-    alpha: number,
-    closeBtn: string
+    options: any[]
 ) => string;
 
 export default ModalModule;
