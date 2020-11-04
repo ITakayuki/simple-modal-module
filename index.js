@@ -2,21 +2,19 @@ const Close = require("./assets/img/close.svg");
 const defaultCloseBtn = `<div class='m-close-btn'><img src=${Close} alt='closeBtn'></div>`;
 
 class Modal{
-    setup(_options){
-        let options = {
+    constructor(options) {
+        this.defaulOption = {
             num: 0,
             modalColor: "#000",
             alpha: "0.8",
             closeBtn: defaultCloseBtn,
             delay: "1s",
         };
-        const keyword = Object.keys(_options);
-        if(keyword !== null || keyword !== undefined) {
-            for (let i = 0; i < keyword.length; i++) {
-                options[keyword[i]] = _options[keyword[i]];
-            }
-        }
-        this.ModalModule(options);
+        this.addOptions = options;
+    }
+    setup(){
+        let mergedOptions = Object.assign(this.defaulOption, this.addOptions)
+        this.ModalModule(mergedOptions);
     }
 
     ModalModule(options){
@@ -36,18 +34,23 @@ class Modal{
     setEvent(alpha, target, num){
         let closeButtons = document.getElementsByClassName("m-close-btn")[num];
         let openButtons = document.getElementsByClassName("m-open-btn")[num];
-        closeButtons.onclick = function () {
+        let self = this;
+        function closeEvent(){
             target.classList.remove("is-open");
             target.style.opacity = "0"
             setTimeout(function (){
-                this.setDisplay("none", target);
+                self.setDisplay("none", target);
             },100)
         }
-        openButtons.onclick = function () {
+        const addClose = closeEvent.bind(this);
+        closeButtons.onclick = addClose;
+        function openEvent() {
             target.classList.add("is-open");
             this.setDisplay("inline-block", target);
             this.setAlpha(alpha, target);
         }
+        const addOpen = openEvent.bind(this);
+        openButtons.onclick = addOpen;
     }
 
     setDisplay(parameter, target){
