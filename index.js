@@ -2,11 +2,12 @@ const Close = require("./assets/img/close.svg");
 const defaultCloseBtn = `<div class='m-close-btn'><img src=${Close} alt='closeBtn'></div>`;
 let localModal;
 function ModalModule(
+    modalNum = 0,
     modalColor = "#000",
     alpha = 0.8,
     closeBtn = defaultCloseBtn
 ){
-    localModal = document.getElementsByClassName("plugin-module-modal")[0];
+    localModal = document.getElementsByClassName("plugin-modal-module")[modalNum];
     let modalContent =  `
         ${closeBtn}
         `

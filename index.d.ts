@@ -1,5 +1,6 @@
 declare const ModalModule: (
-    modalColorR: string,
+    modalNum: number,
+    modalColor: string,
     alpha: number,
     closeBtn: string
 ) => string;
