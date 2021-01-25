@@ -1,86 +1,101 @@
-const Close = require("./assets/img/close.svg");
-const defaultCloseBtn = `<div class='m-close-btn'><img src=${Close} alt='closeBtn'></div>`;
-
 class Modal{
-    constructor(options) {
-        this.defaulOption = {
-            num: 0,
-            modalColor: "#000",
-            alpha: "0.8",
-            closeBtn: defaultCloseBtn,
-            delay: "1s",
-        };
-        this.addOptions = options;
-    }
-    setup(){
-        let mergedOptions = Object.assign(this.defaulOption, this.addOptions)
-        this.ModalModule(mergedOptions);
-    }
-
-    ModalModule(options){
-        const localModal = document.getElementsByClassName("plugin-modal-module")[options.num];
-        let modalContent =  `
-            ${options.closeBtn}
-            `
-        localModal.insertAdjacentHTML("afterbegin", modalContent);
-        localModal.style.backgroundColor = `${options.modalColor}`
-        localModal.style.opacity = `${options.alpha}`
-        localModal.style.display = "none"
-        localModal.style.transition = `${options.delay} ease-out`
-
-        this.setEvent(options.alpha, localModal, options.num)
-    }
-
-    setEvent(alpha, target, num){
-        let closeButtons = document.getElementsByClassName("m-close-btn")[num];
-        let openButtons = document.getElementsByClassName("m-open-btn")[num];
-        let self = this;
-        function closeEvent(){
-            target.classList.remove("is-open");
-            target.style.opacity = "0"
-            setTimeout(function (){
-                self.setDisplay("none", target);
-            },100)
-            this.removeNoScrollEvent();
+    constructor(_time, _target) {
+        this.target = ''
+        this.openClass = '.js-modal-open-btn'
+        this.closeClass = '.js-modal-close-btn'
+        this.modalClass = '.js-modal-target'
+        this.openDom = []
+        this.closeDom = []
+        this.targetModal = []
+        this.openEvent = ''
+        this.closeEvent = ''
+        this.classData = ''
+        this.animationDelay = 0
+        this.scrollvalue = 0
+        this._init(_target, _time)
+        this.addModalEvent()
+        for (let i = 0 ; i < this.targetModal.length; i++) {
+            this.targetModal[i].style.display = 'none'
         }
-        const addClose = closeEvent.bind(this);
-        closeButtons.onclick = addClose;
-        function openEvent() {
-            target.classList.add("is-open");
-            this.setDisplay("inline-block", target);
-            this.setAlpha(alpha, target);
-            this.addNoScrollEvent();
+    }
+
+    _init(_target, _delay) {
+        this.target = _target
+        if(_delay) {
+            this.animationDelay = _delay
         }
-        const addOpen = openEvent.bind(this);
-        openButtons.onclick = addOpen;
+        this.openDom = this.target.querySelectorAll(this.openClass);
+        this.closeDom = this.target.querySelectorAll(this.closeClass);
+        this.targetModal = this.target.querySelectorAll(this.modalClass);
+        this.openEvent = this.openModal.bind(this)
+        this.closeEvent = this.closeModal.bind(this)
     }
 
-    setDisplay(parameter, target){
-        target.style.display = parameter
+    addModalEvent() {
+        for(let i = 0; i < this.openDom.length; i++) {
+            this.openDom[i].addEventListener( 'click', this.openEvent)
+        }
+        for(let i = 0; i < this.closeDom.length; i++) {
+            this.closeDom[i].addEventListener( 'click', this.closeEvent)
+        }
     }
 
-    setAlpha(parameter, target) {
-        if (target.style.display === "inline-block") {
+    removeModalEvent() {
+        for(let i = 0; i < this.openDom.length; i++) {
+            this.openDom.removeEventListener( 'click', this.openEvent)
+        }
+        for(let i = 0; i < this.closeDom.length; i++) {
+            this.closeDom.removeEventListener( 'click', this.closeEvent)
+        }
+    }
+
+    openModal() {
+        for (let i = 0 ; i < this.targetModal.length; i++) {
+            this.targetModal[i].style.display = ''
+            this.targetModal[i].classList.remove('js-modal-is-end')
+            this.targetModal[i].classList.add('js-modal-is-opening')
+            const _this = this
             setTimeout(function () {
-                target.style.opacity = `${parameter}`;
-            }, 100)
-        } else {
-            setTimeout(function () {
-                this.setAlpha(parameter, target);
-            }, 100)
+                _this.targetModal[i].classList.remove('js-modal-is-opening')
+                _this.targetModal[i].classList.add('js-modal-is-open')
+            })
         }
+        this.addNoScrollEvent()
     }
-
+    closeModal () {
+        for (let i = 0 ; i < this.targetModal.length; i++) {
+            this.targetModal[i].classList.remove('js-modal-is-open')
+            this.targetModal[i].classList.add('js-modal-is-endding')
+            const _this = this
+            setTimeout(function () {
+                document.body.style.pointerEvents = 'none'
+                _this.targetModal[i].classList.remove('js-modal-is-endding')
+                _this.targetModal[i].classList.add('js-modal-is-end')
+            }, 100)
+            setTimeout(function () {
+                document.body.style.pointerEvents = 'auto'
+                _this.targetModal[i].style.display = 'none'
+            }, this.animationDelay)
+        }
+        this.removeNoScrollEvent()
+    }
+    noScroll(e) {
+        e.preventDefault();
+    }
     addNoScrollEvent() {
-        window.addEventListener('touchmove', this.noScroll, {passive: false})
-        window.addEventListener('mousewheel', this.noScroll, {passive: false})
+        this.scrollValue = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${this.scrollValue}px`;
     }
+
     removeNoScrollEvent() {
-        window.removeEventListener('touchmove', this.noScroll)
-        window.removeEventListener('mousewheel', this.noScroll)
+        document.body.style.position = '';
+        document.body.style.top = '';
+        window.scrollTo(0, this.scrollValue);
     }
-    noScroll(event) {
-        event.preventDefault();
+
+    destroy() {
+        this.removeModalEvent()
     }
 }
 

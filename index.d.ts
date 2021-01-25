@@ -1,5 +1,6 @@
 declare const ModalModule: (
-    options: any[]
-) => string;
+    _time: number,
+    _target: HTMLDivElement,
+) => any;
 
 export default ModalModule;

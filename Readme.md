@@ -11,23 +11,28 @@
             .
             .
             componentDidMount(){
-                Modal();
+                for (let i = 0; i < document.getElementsByClassName("js-modal").length; i++) {
+                    this.ModalModule.push(Modal(500, document.getElementsByClassName("js-modal")[i]));
+                }
+            }
+            componentWillMount() {
+                for(let i = 0; i < this.ModalModule.length; i++ ) {
+                    this.ModalModule[i].detroy()
+                }
             }
             render(){
                 return(){
-                    <div className="m-open-btn">OPEN</div>
-                    <div className="plugin-modal-module">
-                        <p>You can make contents here</p>
+                    <div className="js-modal-module">
+                        <div className="js-modal-open-btn">OPEN</div>
+                        <div className="js-modal-target">
+                            <button class="js-modal-close-btn">CLOSE</button>
+                            <!--- You can make contents here --->
+                        </div>
                     </div>
                 }
             ```
     - Parameters
-        - `ModalModule(ModalNumber, ModalColor, ModalOpacity, CloseButtonDom)`
-            - ex)`ModalModule(0,"#ff0000","0.5", "<div class="m-close-btn">CLOSE</div>");`
-        - Default Value
-            -   | key | value |
-                |------|--------|
-                | ModalNum | 0 |
-                | ModalColor | #000 |
-                | ModalOpacity | 0.8 |
-                |Close Button DOM | ./assets/img/close.svg |
+      -   | key | value |
+          |------|--------|
+          | _time | open/close animation delay |
+          | _target | modal target |
