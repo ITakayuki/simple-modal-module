@@ -41,6 +41,7 @@ class Modal{
             setTimeout(function (){
                 self.setDisplay("none", target);
             },100)
+            this.removeNoScrollEvent();
         }
         const addClose = closeEvent.bind(this);
         closeButtons.onclick = addClose;
@@ -48,6 +49,7 @@ class Modal{
             target.classList.add("is-open");
             this.setDisplay("inline-block", target);
             this.setAlpha(alpha, target);
+            this.addNoScrollEvent();
         }
         const addOpen = openEvent.bind(this);
         openButtons.onclick = addOpen;
@@ -67,6 +69,18 @@ class Modal{
                 this.setAlpha(parameter, target);
             }, 100)
         }
+    }
+
+    addNoScrollEvent() {
+        window.addEventListener('touchmove', this.noScroll, {passive: false})
+        window.addEventListener('mousewheel', this.noScroll, {passive: false})
+    }
+    removeNoScrollEvent() {
+        window.removeEventListener('touchmove', this.noScroll)
+        window.removeEventListener('mousewheel', this.noScroll)
+    }
+    noScroll(event) {
+        event.preventDefault();
     }
 }
 
