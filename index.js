@@ -99,4 +99,4 @@ class Modal{
     }
 }
 
-export default Modal;
+module.exports = Modal
