@@ -9,9 +9,8 @@ class Modal{
         this.targetModal = []
         this.openEvent = ''
         this.closeEvent = ''
-        this.classData = ''
         this.animationDelay = 0
-        this.scrollvalue = 0
+        this.scrollValue = 0
         this._init(_target, _time)
         this.addModalEvent()
         for (let i = 0 ; i < this.targetModal.length; i++) {
@@ -42,10 +41,10 @@ class Modal{
 
     removeModalEvent() {
         for(let i = 0; i < this.openDom.length; i++) {
-            this.openDom.removeEventListener( 'click', this.openEvent)
+            this.openDom[i].removeEventListener( 'click', this.openEvent)
         }
         for(let i = 0; i < this.closeDom.length; i++) {
-            this.closeDom.removeEventListener( 'click', this.closeEvent)
+            this.closeDom[i].removeEventListener( 'click', this.closeEvent)
         }
     }
 

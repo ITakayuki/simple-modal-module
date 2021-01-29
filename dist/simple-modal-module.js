@@ -17,9 +17,8 @@ var Modal = function () {
         this.targetModal = [];
         this.openEvent = '';
         this.closeEvent = '';
-        this.classData = '';
         this.animationDelay = 0;
-        this.scrollvalue = 0;
+        this.scrollValue = 0;
         this._init(_target, _time);
         this.addModalEvent();
         for (var i = 0; i < this.targetModal.length; i++) {
@@ -54,10 +53,10 @@ var Modal = function () {
         key: 'removeModalEvent',
         value: function removeModalEvent() {
             for (var i = 0; i < this.openDom.length; i++) {
-                this.openDom.removeEventListener('click', this.openEvent);
+                this.openDom[i].removeEventListener('click', this.openEvent);
             }
             for (var _i2 = 0; _i2 < this.closeDom.length; _i2++) {
-                this.closeDom.removeEventListener('click', this.closeEvent);
+                this.closeDom[_i2].removeEventListener('click', this.closeEvent);
             }
         }
     }, {
