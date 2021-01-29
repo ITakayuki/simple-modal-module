@@ -39,22 +39,29 @@ class Modal{
 
     show() {
         for (let i = 0 ; i < this.modalDom.length; i++) {
+            this.modalDom[i].classList.remove('is-end')
             if (this.autoHide) {
                 this.modalDom[i].removeEventListener('transitionend', this._hideEvent)
+                this.modalDom[i].removeEventListener('animationend', this._hideEvent)
                 this.modalDom[i].style.display = ''
+                this.modalDom[i].classList.add('is-opening')
             }
-            this.modalDom[i].classList.remove('js-modal-is-close')
-            this.modalDom[i].classList.add('js-modal-is-open')
+            setTimeout(() => {
+                this.modalDom[i].classList.remove('is-opening')
+                this.modalDom[i].classList.add('is-open')
+            }, 100)
         }
         this._addNoScrollEvent()
     }
 
     hide () {
         for (let i = 0 ; i < this.modalDom.length; i++) {
-            this.modalDom[i].classList.remove('js-modal-is-open')
+            this.modalDom[i].classList.remove('is-open')
+            this.modalDom[i].classList.add('is-end')
             const _this = this
             if (this.autoHide) {
                 this.modalDom[i].addEventListener('transitionend', this._hideTransition)
+                this.modalDom[i].addEventListener('animationend', this._hideTransition)
             }
         }
         document.body.style.pointerEvents = 'auto'
@@ -66,7 +73,8 @@ class Modal{
     }
 
     _hideTransition() {
-            this.style.display = 'none'
+        this.classList.remove('is-end')
+        this.style.display = 'none'
     }
     _addModalEvent() {
         for(let i = 0; i < this.openDom.length; i++) {

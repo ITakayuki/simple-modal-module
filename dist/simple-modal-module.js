@@ -50,13 +50,24 @@ var Modal = function () {
     }, {
         key: 'show',
         value: function show() {
-            for (var i = 0; i < this.modalDom.length; i++) {
-                if (this.autoHide) {
-                    this.modalDom[i].removeEventListener('transitionend', this._hideEvent);
-                    this.modalDom[i].style.display = '';
+            var _this2 = this;
+
+            var _loop = function _loop(i) {
+                _this2.modalDom[i].classList.remove('is-end');
+                if (_this2.autoHide) {
+                    _this2.modalDom[i].removeEventListener('transitionend', _this2._hideEvent);
+                    _this2.modalDom[i].removeEventListener('animationend', _this2._hideEvent);
+                    _this2.modalDom[i].style.display = '';
+                    _this2.modalDom[i].classList.add('is-opening');
                 }
-                this.modalDom[i].classList.remove('js-modal-is-close');
-                this.modalDom[i].classList.add('js-modal-is-open');
+                setTimeout(function () {
+                    _this2.modalDom[i].classList.remove('is-opening');
+                    _this2.modalDom[i].classList.add('is-open');
+                }, 100);
+            };
+
+            for (var i = 0; i < this.modalDom.length; i++) {
+                _loop(i);
             }
             this._addNoScrollEvent();
         }
@@ -64,10 +75,12 @@ var Modal = function () {
         key: 'hide',
         value: function hide() {
             for (var i = 0; i < this.modalDom.length; i++) {
-                this.modalDom[i].classList.remove('js-modal-is-open');
+                this.modalDom[i].classList.remove('is-open');
+                this.modalDom[i].classList.add('is-end');
                 var _this = this;
                 if (this.autoHide) {
                     this.modalDom[i].addEventListener('transitionend', this._hideTransition);
+                    this.modalDom[i].addEventListener('animationend', this._hideTransition);
                 }
             }
             document.body.style.pointerEvents = 'auto';
@@ -81,6 +94,7 @@ var Modal = function () {
     }, {
         key: '_hideTransition',
         value: function _hideTransition() {
+            this.classList.remove('is-end');
             this.style.display = 'none';
         }
     }, {
