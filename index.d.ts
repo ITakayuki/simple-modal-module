@@ -1,6 +1,6 @@
 declare const ModalModule: (
-    _time: number,
-    _target: HTMLDivElement,
+    _data: string,
+    _autoHide: boolean,
 ) => any;
 
 export default ModalModule;

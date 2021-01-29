@@ -1,36 +1,74 @@
 class Modal{
-    constructor(_time, _target) {
-        this.target = ''
-        this.openClass = '.js-modal-open-btn'
-        this.closeClass = '.js-modal-close-btn'
-        this.modalClass = '.js-modal-target'
+    constructor(_dataName, _autoHide) {
+        this.dataName = _dataName
+        if (_autoHide === false) {
+            this.autoHide = false
+        } else {
+            this.autoHide = true
+        }
+        this.openClass = 'js-modal-open-btn'
+        this.closeClass = 'js-modal-close-btn'
+        this.modalClass = 'js-modal-target'
         this.openDom = []
         this.closeDom = []
-        this.targetModal = []
-        this.openEvent = ''
-        this.closeEvent = ''
-        this.animationDelay = 0
+        this.modalDom = []
         this.scrollValue = 0
-        this._init(_target, _time)
-        this.addModalEvent()
-        for (let i = 0 ; i < this.targetModal.length; i++) {
-            this.targetModal[i].style.display = 'none'
+        this._init()
+        this._addModalEvent()
+        if(this.autoHide) {
+            for (let i = 0 ; i < this.modalDom.length; i++) {
+                this.modalDom[i].style.display = 'none'
+            }
         }
     }
-
-    _init(_target, _delay) {
-        this.target = _target
-        if(_delay) {
-            this.animationDelay = _delay
+    _init( ) {
+        const targets = document.querySelectorAll(`[js-modal-data=${this.dataName}]`)
+        for (let i = 0; i < targets.length; i++) {
+            if( targets[i].classList.contains(this.openClass)) {
+                this.openDom.push(targets[i])
+            } else if (targets[i].classList.contains(this.closeClass))  {
+                this.closeDom.push(targets[i])
+            } else if (targets[i].classList.contains(this.modalClass)) {
+                this.modalDom.push(targets[i])
+            }
         }
-        this.openDom = this.target.querySelectorAll(this.openClass);
-        this.closeDom = this.target.querySelectorAll(this.closeClass);
-        this.targetModal = this.target.querySelectorAll(this.modalClass);
-        this.openEvent = this.openModal.bind(this)
-        this.closeEvent = this.closeModal.bind(this)
+        this.openEvent = this.show.bind(this)
+        this.closeEvent = this.hide.bind(this)
+        this._hideEvent = this._hideTransition
     }
 
-    addModalEvent() {
+    show() {
+        for (let i = 0 ; i < this.modalDom.length; i++) {
+            if (this.autoHide) {
+                this.modalDom[i].removeEventListener('transitionend', this._hideEvent)
+                this.modalDom[i].style.display = ''
+            }
+            this.modalDom[i].classList.remove('js-modal-is-close')
+            this.modalDom[i].classList.add('js-modal-is-open')
+        }
+        this._addNoScrollEvent()
+    }
+
+    hide () {
+        for (let i = 0 ; i < this.modalDom.length; i++) {
+            this.modalDom[i].classList.remove('js-modal-is-open')
+            const _this = this
+            if (this.autoHide) {
+                this.modalDom[i].addEventListener('transitionend', this._hideTransition)
+            }
+        }
+        document.body.style.pointerEvents = 'auto'
+        this._removeNoScrollEvent()
+    }
+
+    destroy() {
+        this._removeModalEvent()
+    }
+
+    _hideTransition() {
+            this.style.display = 'none'
+    }
+    _addModalEvent() {
         for(let i = 0; i < this.openDom.length; i++) {
             this.openDom[i].addEventListener( 'click', this.openEvent)
         }
@@ -39,7 +77,7 @@ class Modal{
         }
     }
 
-    removeModalEvent() {
+    _removeModalEvent() {
         for(let i = 0; i < this.openDom.length; i++) {
             this.openDom[i].removeEventListener( 'click', this.openEvent)
         }
@@ -48,54 +86,18 @@ class Modal{
         }
     }
 
-    openModal() {
-        for (let i = 0 ; i < this.targetModal.length; i++) {
-            this.targetModal[i].style.display = ''
-            this.targetModal[i].classList.remove('js-modal-is-end')
-            this.targetModal[i].classList.add('js-modal-is-opening')
-            const _this = this
-            setTimeout(function () {
-                _this.targetModal[i].classList.remove('js-modal-is-opening')
-                _this.targetModal[i].classList.add('js-modal-is-open')
-            })
-        }
-        this.addNoScrollEvent()
-    }
-    closeModal () {
-        for (let i = 0 ; i < this.targetModal.length; i++) {
-            this.targetModal[i].classList.remove('js-modal-is-open')
-            this.targetModal[i].classList.add('js-modal-is-endding')
-            const _this = this
-            setTimeout(function () {
-                document.body.style.pointerEvents = 'none'
-                _this.targetModal[i].classList.remove('js-modal-is-endding')
-                _this.targetModal[i].classList.add('js-modal-is-end')
-            }, 100)
-            setTimeout(function () {
-                document.body.style.pointerEvents = 'auto'
-                _this.targetModal[i].style.display = 'none'
-            }, this.animationDelay)
-        }
-        this.removeNoScrollEvent()
-    }
-    noScroll(e) {
-        e.preventDefault();
-    }
-    addNoScrollEvent() {
+    _addNoScrollEvent() {
         this.scrollValue = window.scrollY;
         document.body.style.position = 'fixed';
         document.body.style.top = `-${this.scrollValue}px`;
     }
 
-    removeNoScrollEvent() {
+    _removeNoScrollEvent() {
         document.body.style.position = '';
         document.body.style.top = '';
         window.scrollTo(0, this.scrollValue);
     }
 
-    destroy() {
-        this.removeModalEvent()
-    }
 }
 
 module.exports = Modal

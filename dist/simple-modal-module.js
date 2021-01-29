@@ -5,43 +5,87 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Modal = function () {
-    function Modal(_time, _target) {
+    function Modal(_dataName, _autoHide) {
         _classCallCheck(this, Modal);
 
-        this.target = '';
-        this.openClass = '.js-modal-open-btn';
-        this.closeClass = '.js-modal-close-btn';
-        this.modalClass = '.js-modal-target';
+        this.dataName = _dataName;
+        if (_autoHide === false) {
+            this.autoHide = false;
+        } else {
+            this.autoHide = true;
+        }
+        this.openClass = 'js-modal-open-btn';
+        this.closeClass = 'js-modal-close-btn';
+        this.modalClass = 'js-modal-target';
         this.openDom = [];
         this.closeDom = [];
-        this.targetModal = [];
-        this.openEvent = '';
-        this.closeEvent = '';
-        this.animationDelay = 0;
+        this.modalDom = [];
         this.scrollValue = 0;
-        this._init(_target, _time);
-        this.addModalEvent();
-        for (var i = 0; i < this.targetModal.length; i++) {
-            this.targetModal[i].style.display = 'none';
+        this._init();
+        this._addModalEvent();
+        if (this.autoHide) {
+            for (var i = 0; i < this.modalDom.length; i++) {
+                this.modalDom[i].style.display = 'none';
+            }
         }
     }
 
     _createClass(Modal, [{
         key: '_init',
-        value: function _init(_target, _delay) {
-            this.target = _target;
-            if (_delay) {
-                this.animationDelay = _delay;
+        value: function _init() {
+            var targets = document.querySelectorAll('[js-modal-data=' + this.dataName + ']');
+            for (var i = 0; i < targets.length; i++) {
+                if (targets[i].classList.contains(this.openClass)) {
+                    this.openDom.push(targets[i]);
+                } else if (targets[i].classList.contains(this.closeClass)) {
+                    this.closeDom.push(targets[i]);
+                } else if (targets[i].classList.contains(this.modalClass)) {
+                    this.modalDom.push(targets[i]);
+                }
             }
-            this.openDom = this.target.querySelectorAll(this.openClass);
-            this.closeDom = this.target.querySelectorAll(this.closeClass);
-            this.targetModal = this.target.querySelectorAll(this.modalClass);
-            this.openEvent = this.openModal.bind(this);
-            this.closeEvent = this.closeModal.bind(this);
+            this.openEvent = this.show.bind(this);
+            this.closeEvent = this.hide.bind(this);
+            this._hideEvent = this._hideTransition;
         }
     }, {
-        key: 'addModalEvent',
-        value: function addModalEvent() {
+        key: 'show',
+        value: function show() {
+            for (var i = 0; i < this.modalDom.length; i++) {
+                if (this.autoHide) {
+                    this.modalDom[i].removeEventListener('transitionend', this._hideEvent);
+                    this.modalDom[i].style.display = '';
+                }
+                this.modalDom[i].classList.remove('js-modal-is-close');
+                this.modalDom[i].classList.add('js-modal-is-open');
+            }
+            this._addNoScrollEvent();
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            for (var i = 0; i < this.modalDom.length; i++) {
+                this.modalDom[i].classList.remove('js-modal-is-open');
+                var _this = this;
+                if (this.autoHide) {
+                    this.modalDom[i].addEventListener('transitionend', this._hideTransition);
+                }
+            }
+            document.body.style.pointerEvents = 'auto';
+            this._removeNoScrollEvent();
+        }
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            this._removeModalEvent();
+        }
+    }, {
+        key: '_hideTransition',
+        value: function _hideTransition() {
+            this.style.display = 'none';
+        }
+    }, {
+        key: '_addModalEvent',
+        value: function _addModalEvent() {
             for (var i = 0; i < this.openDom.length; i++) {
                 this.openDom[i].addEventListener('click', this.openEvent);
             }
@@ -50,8 +94,8 @@ var Modal = function () {
             }
         }
     }, {
-        key: 'removeModalEvent',
-        value: function removeModalEvent() {
+        key: '_removeModalEvent',
+        value: function _removeModalEvent() {
             for (var i = 0; i < this.openDom.length; i++) {
                 this.openDom[i].removeEventListener('click', this.openEvent);
             }
@@ -60,74 +104,18 @@ var Modal = function () {
             }
         }
     }, {
-        key: 'openModal',
-        value: function openModal() {
-            var _this2 = this;
-
-            var _loop = function _loop(i) {
-                _this2.targetModal[i].style.display = '';
-                _this2.targetModal[i].classList.remove('js-modal-is-end');
-                _this2.targetModal[i].classList.add('js-modal-is-opening');
-                var _this = _this2;
-                setTimeout(function () {
-                    _this.targetModal[i].classList.remove('js-modal-is-opening');
-                    _this.targetModal[i].classList.add('js-modal-is-open');
-                });
-            };
-
-            for (var i = 0; i < this.targetModal.length; i++) {
-                _loop(i);
-            }
-            this.addNoScrollEvent();
-        }
-    }, {
-        key: 'closeModal',
-        value: function closeModal() {
-            var _this3 = this;
-
-            var _loop2 = function _loop2(i) {
-                _this3.targetModal[i].classList.remove('js-modal-is-open');
-                _this3.targetModal[i].classList.add('js-modal-is-endding');
-                var _this = _this3;
-                setTimeout(function () {
-                    document.body.style.pointerEvents = 'none';
-                    _this.targetModal[i].classList.remove('js-modal-is-endding');
-                    _this.targetModal[i].classList.add('js-modal-is-end');
-                }, 100);
-                setTimeout(function () {
-                    document.body.style.pointerEvents = 'auto';
-                    _this.targetModal[i].style.display = 'none';
-                }, _this3.animationDelay);
-            };
-
-            for (var i = 0; i < this.targetModal.length; i++) {
-                _loop2(i);
-            }
-            this.removeNoScrollEvent();
-        }
-    }, {
-        key: 'noScroll',
-        value: function noScroll(e) {
-            e.preventDefault();
-        }
-    }, {
-        key: 'addNoScrollEvent',
-        value: function addNoScrollEvent() {
+        key: '_addNoScrollEvent',
+        value: function _addNoScrollEvent() {
             this.scrollValue = window.scrollY;
             document.body.style.position = 'fixed';
             document.body.style.top = '-' + this.scrollValue + 'px';
         }
     }, {
-        key: 'removeNoScrollEvent',
-        value: function removeNoScrollEvent() {
+        key: '_removeNoScrollEvent',
+        value: function _removeNoScrollEvent() {
             document.body.style.position = '';
             document.body.style.top = '';
             window.scrollTo(0, this.scrollValue);
-        }
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            this.removeModalEvent();
         }
     }]);
 
