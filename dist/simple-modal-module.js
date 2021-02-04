@@ -120,7 +120,7 @@ var Modal = function () {
     }, {
         key: '_addNoScrollEvent',
         value: function _addNoScrollEvent() {
-            this.scrollValue = window.scrollY;
+            this.scrollValue = window.pageYOffset;
             document.body.style.position = 'fixed';
             document.body.style.top = '-' + this.scrollValue + 'px';
         }
