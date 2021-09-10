@@ -94,16 +94,37 @@ class Modal{
         }
     }
 
-    _addNoScrollEvent() {
-        this.scrollValue = window.pageYOffset;
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${this.scrollValue}px`;
+    disableScroll(event) {
+        event.preventDefault();
     }
 
+    _addNoScrollEvent() {
+        if (this.isMobile()) {
+            document.addEventListener('touchmove', this.disableScroll, { passive: false });
+        } else {
+            this.scrollValue = window.pageYOffset;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${this.scrollValue}px`;
+        }
+    }
     _removeNoScrollEvent() {
-        document.body.style.position = '';
-        document.body.style.top = '';
-        window.scrollTo(0, this.scrollValue);
+        if(this.isMobile()) {
+            document.removeEventListener('touchmove', this.disableScroll, { passive: false });
+        } else {
+            document.body.style.position = '';
+            document.body.style.top = '';
+            window.scrollTo(0, this.scrollValue);
+        }
+    }
+
+    //DeviceCheck
+    isMobile() {
+        const ua = navigator.userAgent.toLowerCase();
+        if (ua.includes("mobile")) {
+            return true
+        } else {
+            return false
+        }
     }
 
 }

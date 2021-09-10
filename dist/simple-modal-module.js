@@ -118,18 +118,44 @@ var Modal = function () {
             }
         }
     }, {
+        key: 'disableScroll',
+        value: function disableScroll(event) {
+            event.preventDefault();
+        }
+    }, {
         key: '_addNoScrollEvent',
         value: function _addNoScrollEvent() {
-            this.scrollValue = window.pageYOffset;
-            document.body.style.position = 'fixed';
-            document.body.style.top = '-' + this.scrollValue + 'px';
+            if (this.isMobile()) {
+                document.addEventListener('touchmove', this.disableScroll, { passive: false });
+            } else {
+                this.scrollValue = window.pageYOffset;
+                document.body.style.position = 'fixed';
+                document.body.style.top = '-' + this.scrollValue + 'px';
+            }
         }
     }, {
         key: '_removeNoScrollEvent',
         value: function _removeNoScrollEvent() {
-            document.body.style.position = '';
-            document.body.style.top = '';
-            window.scrollTo(0, this.scrollValue);
+            if (this.isMobile()) {
+                document.removeEventListener('touchmove', this.disableScroll, { passive: false });
+            } else {
+                document.body.style.position = '';
+                document.body.style.top = '';
+                window.scrollTo(0, this.scrollValue);
+            }
+        }
+
+        //DeviceCheck
+
+    }, {
+        key: 'isMobile',
+        value: function isMobile() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.includes("mobile")) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }]);
 
