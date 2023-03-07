@@ -30,7 +30,7 @@ class Modal{
       }
     }
   }
-  _init( ) {
+  private _init = ( ) => {
     const targets = document.querySelectorAll(`[js-modal-data=${this.dataName}]`)
     for (let i = 0; i < targets.length; i++) {
       if( targets[i].classList.contains(this.openClass)) {

@@ -9,7 +9,7 @@ declare class Modal {
     private modalDom;
     private scrollValue;
     constructor(_dataName: string, _autoHide?: boolean);
-    _init(): void;
+    private _init;
     show: () => void;
     hide: () => void;
     destroy: () => void;
