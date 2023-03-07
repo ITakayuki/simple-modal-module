@@ -21,3 +21,4 @@ declare class Modal {
     private _removeNoScrollEvent;
     isMobile: () => boolean;
 }
+export default Modal;

@@ -128,4 +128,4 @@ class Modal{
 
 }
 
-module.exports = Modal
+export default Modal;
