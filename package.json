@@ -1,6 +1,6 @@
 {
   "name": "simple-modal-module",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "",
   "main": "dist/simple-modal-module.js",
   "scripts": {

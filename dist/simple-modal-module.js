@@ -125,24 +125,16 @@ var Modal = function () {
     }, {
         key: '_addNoScrollEvent',
         value: function _addNoScrollEvent() {
-            if (this.isMobile()) {
-                document.addEventListener('touchmove', this.disableScroll, { passive: false });
-            } else {
-                this.scrollValue = window.pageYOffset;
-                document.body.style.position = 'fixed';
-                document.body.style.top = '-' + this.scrollValue + 'px';
-            }
+            this.scrollValue = window.pageYOffset;
+            document.body.style.position = 'fixed';
+            document.body.style.top = '-' + this.scrollValue + 'px';
         }
     }, {
         key: '_removeNoScrollEvent',
         value: function _removeNoScrollEvent() {
-            if (this.isMobile()) {
-                document.removeEventListener('touchmove', this.disableScroll, { passive: false });
-            } else {
-                document.body.style.position = '';
-                document.body.style.top = '';
-                window.scrollTo(0, this.scrollValue);
-            }
+            document.body.style.position = '';
+            document.body.style.top = '';
+            window.scrollTo(0, this.scrollValue);
         }
 
         //DeviceCheck
