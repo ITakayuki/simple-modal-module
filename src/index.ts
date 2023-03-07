@@ -45,15 +45,15 @@ class Modal{
 
   show = () => {
     for (let i = 0 ; i < this.modalDom.length; i++) {
-      this.modalDom[i].classList.remove('is-end')
+      this.modalDom[i].classList.remove('is-close')
       if (this.autoHide) {
         this.modalDom[i].removeEventListener('transitionend', this._hideTransition)
         this.modalDom[i].removeEventListener('animationend', this._hideTransition)
         this.modalDom[i].style.display = ''
-        this.modalDom[i].classList.add('is-opening')
+        this.modalDom[i].classList.add('is-before-open')
       }
       setTimeout(() => {
-        this.modalDom[i].classList.remove('is-opening')
+        this.modalDom[i].classList.remove('is-before-open')
         this.modalDom[i].classList.add('is-open')
       }, 100)
     }
@@ -63,7 +63,7 @@ class Modal{
   hide = () => {
     for (let i = 0 ; i < this.modalDom.length; i++) {
       this.modalDom[i].classList.remove('is-open')
-      this.modalDom[i].classList.add('is-end')
+      this.modalDom[i].classList.add('is-close')
       const _this = this
       if (this.autoHide) {
         this.modalDom[i].addEventListener('transitionend', this._hideTransition)
@@ -80,7 +80,7 @@ class Modal{
 
   private _hideTransition = (e: TransitionEvent | AnimationEvent) => {
     const target = e.currentTarget as HTMLElement;
-    target.classList.remove('is-end')
+    target.classList.remove('is-close')
     target.style.display = 'none'
   }
   private _addModalEvent = () => {

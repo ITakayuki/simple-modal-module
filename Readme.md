@@ -21,6 +21,27 @@ const modal = new ModalModule("sampleModal");
 // if remove events
 modal.destroy();
 ```
+
+```scss
+.js-modal-target {
+  transition: opacity 0.4s ease;
+  &.is-before-open {
+    opacity: 0;
+  }
+  &.is-open {
+    opacity: 1;
+  }
+  &.is-close {
+    opacity: 0;
+  }
+}
+```
+
+### status className
+1. is-before-open
+2. is-open
+3. is-close
+
 ### Parameters
     - 
 | key | type | required             | note                      |
@@ -49,6 +70,26 @@ const modal = new ModalModule("sampleModal");
 // イベントリスナーを消す場合
 modal.destroy();
 ```
+
+```scss
+.js-modal-target {
+  transition: opacity 0.4s ease;
+  &.is-before-open {
+    opacity: 0;
+  }
+  &.is-open {
+    opacity: 1;
+  }
+  &.is-close {
+    opacity: 0;
+  }
+}
+```
+
+### ステータスを管理するクラス名
+1. is-before-open
+2. is-open
+3. is-close
 
 ## パラメーター
 
