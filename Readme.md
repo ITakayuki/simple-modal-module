@@ -1,5 +1,10 @@
 # Simple-Modal-Module
-##    How to install
+
+## Language
+- [English](#english)  
+- [Japanese](#japanese)
+
+<h2 id="english">How to install</h2>
 ```bash
 npm install simple-modal-module
 ```
@@ -37,19 +42,21 @@ modal.destroy();
 }
 ```
 
+
 ### status className
 1. is-before-open
 2. is-open
 3. is-close
 
 ### Parameters
-    - 
 | key | type | required             | note                      |
 |------|--------|----------------------|---------------------------|
 | data | string | true                 | use data string by target |
 | autoHide | boolean | false(default: `true`) | if use v-if, `false`      |
     
-##    インストール方法
+---  
+
+<h2 id="japanese">インストール方法</h2>
 ```bash
 npm install simple-modal-module
 ```
