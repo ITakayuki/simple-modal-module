@@ -2,7 +2,7 @@
 
 ## Language
 - [English](#english)  
-- [Japanese](#japanese)
+- [日本語](#japanese)
 
 <h2 id="english">How to install</h2>
 
