@@ -30,7 +30,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  default: () => ModalModule,
+  default: () => createModal,
   disableFixedPage: () => disableFixedPage,
   enableFixedPage: () => enableFixedPage
 });
@@ -85,7 +85,7 @@ var mergeOption = (option) => {
 };
 
 // src/index.ts
-var ModalModule = (targetID, option) => {
+var createModal = (targetID, option) => {
   const fixOption = mergeOption(option || {});
   const openButtons = getElements(targetID, fixOption.dataName, fixOption.navigation.openEl);
   const closeButtons = getElements(targetID, fixOption.dataName, fixOption.navigation.closeEl);
@@ -168,5 +168,5 @@ var ModalModule = (targetID, option) => {
       node.style.display = "none";
     }
   }
-  return { showModal, destroy, openButtons, closeButtons, targetNodes };
+  return { showModal, hideModal, destroy, openButtons, closeButtons, targetNodes };
 };

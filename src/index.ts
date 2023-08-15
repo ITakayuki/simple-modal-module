@@ -3,7 +3,7 @@ import {getElements} from "./core";
 import {mergeOption} from "./utils/option";
 
 
-const ModalModule = (targetID: string, option?: ModalOption) => {
+const createModal = (targetID: string, option?: ModalOption) => {
   const fixOption = mergeOption(option || {});
   ///////////////////////////////////
   //       INITIALIZE       //
@@ -100,8 +100,8 @@ const ModalModule = (targetID: string, option?: ModalOption) => {
   ///////////////////////////////////
   //        RETURN         //
   //////////////////////////////////
-  return {showModal, destroy, openButtons, closeButtons, targetNodes,}
+  return {showModal, hideModal, destroy, openButtons, closeButtons, targetNodes,}
 }
 
 
-export {ModalModule as default, enableFixedPage, disableFixedPage}
+export {createModal as default, enableFixedPage, disableFixedPage}

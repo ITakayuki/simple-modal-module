@@ -21,11 +21,20 @@ npm install simple-modal-module
 ```
       
 ```javascript
-import ModalModule from "simple-modal-module";
-const modal = ModalModule("sampleModal");
-            
-// if remove events
-modal.destroy();
+import createModal from "simple-modal-module";
+const modal = createModal("sampleModal");
+// or
+const modal = createModal("simpleModal", {
+    autoHide: false
+})
+
+modal.openButtons // open button elements
+modal.closeButtons // close button elements
+modal.targetNodes // modal target elements
+modal.showModal() // open modal
+modal.hideModal() // close modal
+modal.destroy() // remove evenr listeners.
+
 ```
 
 ```scss
@@ -57,6 +66,16 @@ modal.destroy();
 |      autoFixed       |                | true           | Specifies whether the page is fixed when the modal state is switched.                                      |
 |       dataName       |                | data-modal     | You can specify a dataAttribute name that specifies the same modal group.                                  |
     
+### return Values
+|         key           | node                                            |
+|:--------------------:|-------------------------------------------------|
+|        showModal        | Function to open the modal.                     |
+|        hideModal        | Function to close the modal.                    |
+|        destroy        | Function to remove a registered event listener. |
+|        openButtons        | Element list of buttons to open the modal.      |
+|        closeButtons        | Element list of buttons to close the modal.     |
+|        targetNodes        | Modal Elements.                                 |
+
 ---  
 <br/>
 <br/>
@@ -76,11 +95,19 @@ npm install simple-modal-module
 ```
 
 ```javascript
-import ModalModule from "simple-modal-module";
-const modal = new ModalModule("sampleModal");
-            
-// イベントリスナーを消す場合
-modal.destroy();
+import createModal from "simple-modal-module";
+const modal = createModal("sampleModal");
+// or
+const modal = createModal("simpleModal", {
+    autoHide: false
+})
+
+modal.openButtons // open button elements
+modal.closeButtons // close button elements
+modal.targetNodes // modal target elements
+modal.showModal() // open modal
+modal.hideModal() // close modal
+modal.destroy() // remove evenr listeners.
 ```
 
 ```scss
@@ -111,3 +138,13 @@ modal.destroy();
 |       autoHide       |                | true            | `navigation.openEl`や`navigation.closeEl`をクリックしたときにモーダルを開くかどうかを指定できます |
 |      autoFixed       |                | true            | モーダルの状態が切り替わったときに、ページを固定するかを指定します                                |
 |       dataName       |                | data-modal      | 同一のモーダルグループを指定するdata属性名を指定できます                                   |
+
+### return Values
+|         key           | node                 |
+|:--------------------:|----------------------|
+|        showModal        | モーダルを開く関数            |
+|        hideModal        | モーダルを閉じる関数           |
+|        destroy        | 登録されたイベントリスナーを解除する関数 |
+|        openButtons        | モーダルを開くためのボタンのエレメントリスト    |
+|        closeButtons        | モーダルを閉じるためのボタンのエレメントリスト   |
+|        targetNodes        | モーダル本体のエレメント         |

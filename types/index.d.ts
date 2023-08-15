@@ -1,9 +1,10 @@
 import { enableFixedPage, disableFixedPage } from "./utils/fixPage";
-declare const ModalModule: (targetID: string, option?: any) => {
+declare const createModal: (targetID: string, option?: any) => {
     showModal: () => void;
+    hideModal: () => void;
     destroy: () => void;
     openButtons: any[] | undefined;
     closeButtons: any[] | undefined;
     targetNodes: any[] | undefined;
 };
-export { ModalModule as default, enableFixedPage, disableFixedPage };
+export { createModal as default, enableFixedPage, disableFixedPage };

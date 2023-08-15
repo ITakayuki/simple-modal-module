@@ -47,7 +47,7 @@ var mergeOption = (option) => {
 };
 
 // src/index.ts
-var ModalModule = (targetID, option) => {
+var createModal = (targetID, option) => {
   const fixOption = mergeOption(option || {});
   const openButtons = getElements(targetID, fixOption.dataName, fixOption.navigation.openEl);
   const closeButtons = getElements(targetID, fixOption.dataName, fixOption.navigation.closeEl);
@@ -130,10 +130,10 @@ var ModalModule = (targetID, option) => {
       node.style.display = "none";
     }
   }
-  return { showModal, destroy, openButtons, closeButtons, targetNodes };
+  return { showModal, hideModal, destroy, openButtons, closeButtons, targetNodes };
 };
 export {
-  ModalModule as default,
+  createModal as default,
   disableFixedPage,
   enableFixedPage
 };
