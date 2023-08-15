@@ -14,7 +14,7 @@ var disableFixedPage = () => {
 // src/core.ts
 var getElements = (name, id, selector) => {
   if (typeof selector === "string") {
-    return Array.from(document.querySelectorAll(`[${name}=${id}]${selector}`));
+    return Array.from(document.querySelectorAll(`[${name}=${id}].${selector}`));
   } else if (selector instanceof HTMLElement) {
     return [selector];
   } else if (selector instanceof Array && selector.every((e) => e instanceof HTMLElement)) {
@@ -28,8 +28,8 @@ import { isPlainObject } from "is-plain-object";
 var defaultOption = {
   target: "js-modal-target",
   navigation: {
-    openEl: "js-modal-open-btn",
-    closeEl: "js-modal-close-btn"
+    openEl: "js-modal-open",
+    closeEl: "js-modal-close"
   },
   hookClass: {
     beforeOpen: "is-before-open",
@@ -38,7 +38,7 @@ var defaultOption = {
   },
   autoHide: true,
   autoFixed: true,
-  dataName: "data-js-modal"
+  dataName: "data-modal"
 };
 var mergeOption = (option) => {
   return DeepMerge(defaultOption, option, {

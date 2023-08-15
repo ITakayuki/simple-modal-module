@@ -2,9 +2,11 @@
   "name": "simple-modal-module",
   "version": "3.0.0",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
   "files": [
-    "/dist"
+    "/dist",
+    "/types"
   ],
   "types": "./types/index.d.ts",
   "scripts": {

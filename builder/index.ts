@@ -12,7 +12,7 @@ const shared: esBuild.BuildOptions = {
 esBuild.build({
     ...shared,
     format: "esm",
-    outfile: path.resolve("./dist/index.esm.js"),
+    outfile: path.resolve("./dist/index.mjs"),
     plugins: [dtsPlugin({
     outDir: "types"
     }), nodeExternalsPlugin()]
@@ -23,7 +23,7 @@ esBuild.build({
 esBuild.build({
     ...shared,
     format: "cjs",
-    outfile: path.resolve("./dist/index.cjs.js"),
+    outfile: path.resolve("./dist/index.cjs"),
     plugins: [nodeExternalsPlugin()]
 }).then(() => {
     console.log("Build CJS Finish");
