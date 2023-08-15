@@ -1,6 +1,7 @@
 import {enableFixedPage, disableFixedPage} from "./utils/fixPage";
 import {getElements} from "./core";
 import {mergeOption} from "./utils/option";
+import {ModalOption} from "./types/option";
 
 
 const createModal = (targetID: string, option?: ModalOption) => {

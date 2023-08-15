@@ -1,9 +1,8 @@
-type Selector = string;
-type ClassName = string;
+export type ClassName = string;
 
 interface Navigation {
-  openEl?: Selector | HTMLElement | HTMLElement[];
-  closeEl?: Selector | HTMLElement | HTMLElement[];
+  openEl?: ClassName | HTMLElement | HTMLElement[];
+  closeEl?: ClassName | HTMLElement | HTMLElement[];
 }
 
 interface Hooks {
@@ -12,8 +11,8 @@ interface Hooks {
   close?: ClassName;
 }
 
-interface ModalOption {
-  target?: Selector | HTMLElement;
+export interface ModalOption {
+  target?: ClassName | HTMLElement;
   navigation?: Navigation;
   hookClass?: Hooks;
   autoHide?: boolean;
@@ -21,8 +20,8 @@ interface ModalOption {
   dataName?: string
 }
 
-interface RequiredModalOption {
-  target: Selector | HTMLElement;
+export interface RequiredModalOption {
+  target: ClassName | HTMLElement;
   navigation: Required<Navigation>;
   hookClass: Required<Hooks>;
   autoHide: boolean;

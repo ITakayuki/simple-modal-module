@@ -1,7 +1,8 @@
 import DeepMerge from "deepmerge";
 import {isPlainObject} from "is-plain-object";
+import {RequiredModalOption, ModalOption} from "../types/option";
 
-const defaultOption: ModalOption = {
+const defaultOption: RequiredModalOption = {
   target: "js-modal-target",
   navigation: {
     openEl: "js-modal-open",
