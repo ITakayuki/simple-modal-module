@@ -139,7 +139,7 @@ modal.destroy() // remove evenr listeners.
 |      autoFixed       |                | true            | モーダルの状態が切り替わったときに、ページを固定するかを指定します                                |
 |       dataName       |                | data-modal      | 同一のモーダルグループを指定するdata属性名を指定できます                                   |
 
-### return Values
+### return値
 |         key           | node                 |
 |:--------------------:|----------------------|
 |        showModal        | モーダルを開く関数            |
