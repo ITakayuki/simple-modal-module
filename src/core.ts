@@ -1,4 +1,6 @@
-const getElements = (name: string, id: string,  selector: Selector | HTMLElement | HTMLElement[]) => {
+import {ClassName} from "./types/option";
+
+const getElements = (name: string, id: string,  selector: ClassName | HTMLElement | HTMLElement[]) => {
   if (typeof selector === "string") {
     return Array.from(document.querySelectorAll(`[${id}=${name}].${selector}`)) as HTMLElement[];
   } else if (selector instanceof HTMLElement) {

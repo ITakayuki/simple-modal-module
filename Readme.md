@@ -20,10 +20,11 @@ npm install simple-modal-module
 </div>
 ```
       
-```javascript
+```typescript
+// Basic usage
 import createModal from "simple-modal-module";
 const modal = createModal("sampleModal");
-// or
+// or when need override options
 const modal = createModal("simpleModal", {
     autoHide: false
 })
@@ -34,7 +35,17 @@ modal.targetNodes // modal target elements
 modal.showModal() // open modal
 modal.hideModal() // close modal
 modal.destroy() // remove evenr listeners.
+```
 
+```typescript
+// Other APIs
+import {enableFixedPage, disableFixedPage} from "simple-modal-module";
+
+// Fixed Page
+enableFixedPage();
+
+// Unfixed Page
+disableFixedPage();
 ```
 
 ```scss
@@ -94,10 +105,11 @@ npm install simple-modal-module
 </div>
 ```
 
-```javascript
+```typescript
+// Basic usage
 import createModal from "simple-modal-module";
 const modal = createModal("sampleModal");
-// or
+// or when need override options
 const modal = createModal("simpleModal", {
     autoHide: false
 })
@@ -108,6 +120,17 @@ modal.targetNodes // modal target elements
 modal.showModal() // open modal
 modal.hideModal() // close modal
 modal.destroy() // remove evenr listeners.
+```
+
+```typescript
+// Other APIs
+import {enableFixedPage, disableFixedPage} from "simple-modal-module";
+
+// Fixed Page
+enableFixedPage();
+
+// Unfixed Page
+disableFixedPage();
 ```
 
 ```scss
