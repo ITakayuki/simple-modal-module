@@ -5,7 +5,7 @@ const enableFixedPage = () => {
 }
 
 const disableFixedPage = () => {
-  const scrollVal = Number(document.body.style.top.replace("px", ""));
+  const scrollVal = Number(document.body.style.top.replace("px", "").replace("-", ""));
   document.body.style.position = "";
   document.body.style.top = "";
   window.scrollTo(0, scrollVal);
