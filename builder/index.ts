@@ -1,23 +1,30 @@
-const esBuild = require("esbuild");
-const fs = require("fs");
-const path = require("path");
-import BabelPlugin from "@itkyk/esbuild-plugin-babel";
+import esBuild from "esbuild";
+import {dtsPlugin} from "esbuild-plugin-d.ts";
+import {nodeExternalsPlugin} from "esbuild-node-externals";
+import * as path from "path";
+
+const shared: esBuild.BuildOptions = {
+    bundle: true,
+    entryPoints: [path.resolve("./src/index.ts")],
+    sourcemap: false,
+    target: "es6",
+}
+esBuild.build({
+    ...shared,
+    format: "esm",
+    outfile: path.resolve("./dist/index.esm.js"),
+    plugins: [dtsPlugin({
+    outDir: "types"
+    }), nodeExternalsPlugin()]
+}).then(() => {
+    console.log("Build ESM Finish");
+})
 
 esBuild.build({
-  entryPoints: ["./src/index.ts"],
-  bundle: false,
-  outfile: "./dist/index.js",
-  platform: "browser",
-  plugins: [
-    BabelPlugin({
-      filter: /.ts/,
-      babel: {
-        presets: [
-          "@babel/preset-typescript",
-          "@babel/preset-env",
-        ],
-        plugins: [ "@babel/plugin-proposal-class-properties"]
-      }
-    })
-  ]
+    ...shared,
+    format: "cjs",
+    outfile: path.resolve("./dist/index.cjs.js"),
+    plugins: [nodeExternalsPlugin()]
+}).then(() => {
+    console.log("Build CJS Finish");
 })
