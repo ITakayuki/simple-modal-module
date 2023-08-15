@@ -52,7 +52,7 @@ var disableFixedPage = () => {
 // src/core.ts
 var getElements = (name, id, selector) => {
   if (typeof selector === "string") {
-    return Array.from(document.querySelectorAll(`[${name}=${id}].${selector}`));
+    return Array.from(document.querySelectorAll(`[${id}=${name}].${selector}`));
   } else if (selector instanceof HTMLElement) {
     return [selector];
   } else if (selector instanceof Array && selector.every((e) => e instanceof HTMLElement)) {
