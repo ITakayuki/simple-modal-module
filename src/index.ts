@@ -3,6 +3,27 @@ import {getElements} from "./core";
 import {mergeOption} from "./utils/option";
 import {ModalOption} from "./types/option";
 
+interface CustomDetail extends ReturnType<typeof createModal>{
+  target: HTMLElement;
+}
+
+
+declare global {
+  interface HTMLModalTargetElement extends Omit<HTMLElement, "addEventListener" | "removeEventListener">{
+    addEventListener<K extends keyof HTMLModalTargetElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLModalTargetElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+    addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+    removeEventListener<K extends keyof HTMLModalTargetElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLModalTargetElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+    removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+  }
+  interface HTMLModalTargetElementEventMap extends HTMLElementEventMap{
+    "m-init": CustomEvent<CustomDetail>;
+    "m-destroy": CustomEvent<CustomDetail>;
+    "m-before-open": CustomEvent<CustomDetail>;
+    "m-open": CustomEvent<CustomDetail>;
+    "m-close": CustomEvent<CustomDetail>;
+  }
+}
+
 
 const createModal = (targetID: string, option?: ModalOption) => {
   const fixOption = mergeOption(option || {});
@@ -11,7 +32,7 @@ const createModal = (targetID: string, option?: ModalOption) => {
   //////////////////////////////////
   const openButtons = getElements(targetID, fixOption.dataName, fixOption.navigation.openEl);
   const closeButtons = getElements(targetID, fixOption.dataName, fixOption.navigation.closeEl);
-  const targetNodes = getElements(targetID, fixOption.dataName, fixOption.target);
+  const targetNodes = getElements<HTMLModalTargetElement>(targetID, fixOption.dataName, fixOption.target);
   ///////////////////////////////////
   //        Modules         //
   //////////////////////////////////
@@ -27,15 +48,27 @@ const createModal = (targetID: string, option?: ModalOption) => {
     if (targetNodes) {
       for (const target of targetNodes) {
         target.classList.remove(fixOption.hookClass.close);
-        if (fixOption.autoHide) {
+        if (fixOption.animation) {
           target.removeEventListener('transitionend', hideEvent)
           target.removeEventListener('animationend', hideEvent)
         }
         target.style.display = ''
         target.classList.add(fixOption.hookClass.beforeOpen);
+        target.dispatchEvent(new CustomEvent("m-before-open", {
+          detail: {
+            target,
+            ...resultData
+          },
+        }))
         setTimeout(() => {
           target.classList.remove(fixOption.hookClass.beforeOpen);
           target.classList.add(fixOption.hookClass.open);
+          target.dispatchEvent(new CustomEvent("m-open", {
+            detail: {
+              target,
+              ...resultData
+            },
+          }))
         }, 100)
       }
       if (fixOption.autoFixed) {
@@ -48,7 +81,13 @@ const createModal = (targetID: string, option?: ModalOption) => {
       for (const target of targetNodes) {
         target.classList.remove(fixOption.hookClass.open);
         target.classList.add(fixOption.hookClass.close);
-        if (fixOption.autoHide) {
+        target.dispatchEvent(new CustomEvent("m-close", {
+          detail: {
+            target,
+            ...resultData
+          }
+        }))
+        if (fixOption.animation) {
           target.addEventListener('transitionend', hideEvent);
           target.addEventListener('animationend', hideEvent);
         } else {
@@ -72,9 +111,15 @@ const createModal = (targetID: string, option?: ModalOption) => {
         node.removeEventListener("click", hideModal);
       }
       if (targetNodes) {
-        for (const node of targetNodes) {
-          node.removeEventListener('transitionend', hideEvent);
-          node.removeEventListener('animationend', hideEvent);
+        for (const target of targetNodes) {
+          target.removeEventListener('transitionend', hideEvent);
+          target.removeEventListener('animationend', hideEvent);
+          target.dispatchEvent(new CustomEvent("m-destroy", {
+            detail: {
+              target,
+              ...resultData
+            }
+          }))
         }
       }
     }
@@ -82,6 +127,8 @@ const createModal = (targetID: string, option?: ModalOption) => {
   ///////////////////////////////////
   //          FLOW           //
   //////////////////////////////////
+  // set result
+  const resultData = {showModal, hideModal, destroy, openButtons, closeButtons, targetNodes};
   // Add Events
   if (openButtons) {
     for (const node of openButtons) {
@@ -94,14 +141,20 @@ const createModal = (targetID: string, option?: ModalOption) => {
     }
   }
   if (targetNodes) {
-    for (const node of targetNodes) {
-      node.style.display = "none";
+    for (const target of targetNodes) {
+      target.style.display = "none";
+      target.dispatchEvent(new CustomEvent("m-init", {
+        detail: {
+          target,
+          ...resultData
+        }
+      }))
     }
   }
   ///////////////////////////////////
   //        RETURN         //
   //////////////////////////////////
-  return {showModal, hideModal, destroy, openButtons, closeButtons, targetNodes,}
+  return resultData;
 }
 
 

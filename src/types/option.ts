@@ -15,7 +15,7 @@ export interface ModalOption {
   target?: ClassName | HTMLElement;
   navigation?: Navigation;
   hookClass?: Hooks;
-  autoHide?: boolean;
+  animation?: boolean;
   autoFixed?: boolean;
   dataName?: string
 }
@@ -24,7 +24,7 @@ export interface RequiredModalOption {
   target: ClassName | HTMLElement;
   navigation: Required<Navigation>;
   hookClass: Required<Hooks>;
-  autoHide: boolean;
+  animation: boolean;
   autoFixed: boolean;
   dataName: string
 }

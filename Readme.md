@@ -26,15 +26,25 @@ import createModal from "simple-modal-module";
 const modal = createModal("sampleModal");
 // or when need override options
 const modal = createModal("simpleModal", {
-    autoHide: false
+    animation: false
 })
 
+// methods
 modal.openButtons // open button elements
 modal.closeButtons // close button elements
 modal.targetNodes // modal target elements
 modal.showModal() // open modal
 modal.hideModal() // close modal
 modal.destroy() // remove evenr listeners.
+
+// events
+for (const target of targetNodes) {
+  target.addEventListener("m-init", () => {});
+  target.addEventListener("m-destroy", () => {});
+  target.addEventListener("m-before-open", () => {});
+  target.addEventListener("m-open", () => {});
+  target.addEventListener("m-close", () => {});
+}
 ```
 
 ```typescript
@@ -73,7 +83,7 @@ disableFixedPage();
 | hookClass.beforeOpen |  | is-before-open | You can specify the name of the class just before the modal opens.                                         |
 |    hookClass.open    |  | is-open        | You can specify the class name when the modal opens.                                                       |
 |   hookClass.close    |  | is-close       | You can specify the class name when the modal closes                                                       |
-|       autoHide       |                | true           | You can specify whether or not to open a modal when you click `navigation.openEl` or `navigation.closeEl`. |
+|       animation       |                | true           | You can specify whether or not to open a modal when you click `navigation.openEl` or `navigation.closeEl`. |
 |      autoFixed       |                | true           | Specifies whether the page is fixed when the modal state is switched.                                      |
 |       dataName       |                | data-modal     | You can specify a dataAttribute name that specifies the same modal group.                                  |
     
@@ -86,6 +96,16 @@ disableFixedPage();
 |        openButtons        | Element list of buttons to open the modal.      |
 |        closeButtons        | Element list of buttons to close the modal.     |
 |        targetNodes        | Modal Elements.                                 |
+
+### Target element's custom events
+|      key      | description                                     |
+|:-------------:|-------------------------------------------------|
+|    m-init     | Fired when a modal is created.                  |
+|   m-destroy   | Fired when the modal is destroyed. |
+| m-before-open | Fired when the modal starts to open.                     |
+|    m-open     | Fired when the modal opens.                    |
+|    m-close    | Fired when modal closes. |
+
 
 ---  
 <br/>
@@ -114,12 +134,22 @@ const modal = createModal("simpleModal", {
     autoHide: false
 })
 
+// メソッド
 modal.openButtons // open button elements
 modal.closeButtons // close button elements
 modal.targetNodes // modal target elements
 modal.showModal() // open modal
 modal.hideModal() // close modal
 modal.destroy() // remove evenr listeners.
+
+// イベント
+for (const target of targetNodes) {
+  target.addEventListener("m-init", () => {});
+  target.addEventListener("m-destroy", () => {});
+  target.addEventListener("m-before-open", () => {});
+  target.addEventListener("m-open", () => {});
+  target.addEventListener("m-close", () => {});
+}
 ```
 
 ```typescript
@@ -171,3 +201,12 @@ disableFixedPage();
 |        openButtons        | モーダルを開くためのボタンのエレメントリスト    |
 |        closeButtons        | モーダルを閉じるためのボタンのエレメントリスト   |
 |        targetNodes        | モーダル本体のエレメント         |
+
+### Target element's custom events
+|      key      | 説明                     |
+|:-------------:|------------------------|
+|    m-init     | モーダルが`init`された時に発火。    |
+|   m-destroy   | モーダルが`destroy`された時に発火。 |
+| m-before-open | モーダルが開く直前に発火。          |
+|    m-open     | モーダルが開かれる時に発火。         |
+|    m-close    | モーダルが閉じられる時に発火。       |
