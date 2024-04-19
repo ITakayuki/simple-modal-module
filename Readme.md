@@ -131,7 +131,7 @@ import createModal from "simple-modal-module";
 const modal = createModal("sampleModal");
 // or when need override options
 const modal = createModal("simpleModal", {
-    autoHide: false
+    animation: false
 })
 
 // メソッド
@@ -188,7 +188,7 @@ disableFixedPage();
 | hookClass.beforeOpen |  | is-before-open  | モーダルが開く直前のクラス名を指定できます                                            |
 |    hookClass.open    |  | is-open         | モーダルが開らく時のクラス名を指定できます                                            |
 |   hookClass.close    |  | is-close        | モーダルが閉じる時のクラス名を指定できます                                            |
-|       autoHide       |                | true            | `navigation.openEl`や`navigation.closeEl`をクリックしたときにモーダルを開くかどうかを指定できます |
+|       animation       |                | true            | `navigation.openEl`や`navigation.closeEl`をクリックしたときにモーダルを開くかどうかを指定できます |
 |      autoFixed       |                | true            | モーダルの状態が切り替わったときに、ページを固定するかを指定します                                |
 |       dataName       |                | data-modal      | 同一のモーダルグループを指定するdata属性名を指定できます                                   |
 
