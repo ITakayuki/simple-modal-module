@@ -88,7 +88,7 @@ var defaultOption = {
     open: "is-open",
     close: "is-close"
   },
-  autoHide: true,
+  animation: true,
   autoFixed: true,
   dataName: "data-modal"
 };

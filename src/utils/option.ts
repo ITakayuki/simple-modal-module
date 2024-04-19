@@ -13,7 +13,7 @@ const defaultOption: RequiredModalOption = {
     open: "is-open",
     close: "is-close"
   },
-  autoHide: true,
+  animation: true,
   autoFixed: true,
   dataName: "data-modal"
 };
